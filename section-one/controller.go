@@ -75,13 +75,27 @@ func (s *MuxServer) deleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *MuxServer) getUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	userId, err := strconv.Atoi(vars["id"])
+	// Extract  'id' from the query parameters
+	idParam := r.URL.Query().Get("id")
+	if idParam == "" {
+		http.Error(w, "Missing 'id' query parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Convert `id` from string to integer
+	userId, err := strconv.Atoi(idParam)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 	var user User
-	s.db.First(&user, userId)
+	result := s.db.First(&user, userId)
+	// Check if user exists
+	if result.Error != nil {
+		http.Error(w, "User not found", http.StatusNotFound)
+		return
+	}
+	// Return the user in JSON format
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 }
