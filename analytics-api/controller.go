@@ -99,3 +99,35 @@ func (s *MuxServer) getUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
 }
+
+// func (s *MuxServer) getUser(w http.ResponseWriter, r *http.Request) {
+// 	// Extract `id` from path variables
+// 	vars := mux.Vars(r)
+// 	idParam, exists := vars["id"]
+
+// 	if !exists || idParam == "" {
+// 		http.Error(w, "Missing 'id' path variable", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	// Convert `id` from string to integer
+// 	userId, err := strconv.Atoi(idParam)
+// 	if err != nil {
+// 		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	// Fetch user from database
+// 	var user User
+// 	result := s.db.First(&user, userId)
+
+// 	// Check if user exists
+// 	if result.Error != nil {
+// 		http.Error(w, "User not found", http.StatusNotFound)
+// 		return
+// 	}
+
+// 	// Return the user in JSON format
+// 	w.Header().Set("Content-Type", "application/json")
+// 	json.NewEncoder(w).Encode(user)
+// }
