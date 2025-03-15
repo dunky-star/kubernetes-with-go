@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-secret-credentials
+  namespace: go-k8s-analytics
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: "test_users_db"
+  POSTGRES_USER: "user"
+  POSTGRES_PASSWORD: "Cluster@1"
